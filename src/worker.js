@@ -1,18 +1,21 @@
 const net = require('net');
 const Conveyor = require('./conveyor');
 
-function worker({ host = '0.0.0.0', port = 8000 }) {
+function worker({ host = '0.0.0.0', port = 8000, delay }) {
   const server = net.createServer(socket => {
     console.log('New connection!');
 
-    const conveyor = new Conveyor();
+    const conveyor = new Conveyor(null, delay);
+
+    // const sendDataToSocket = data => socket.write(data);
 
     conveyor.on(data => {
-      socket.write(data);
+      process.nextTick(() => socket.write(data));
+      // socket.write(data);
     });
 
     socket.on('data', data => {
-      conveyor.enter(data);
+      conveyor.enter(data.toString().replace(/\r?\n/, ''));
     });
 
     // close connection
@@ -37,5 +40,6 @@ if (!module.parent) {
   worker({
     host: process.argv[2],
     port: process.argv[3],
+    delay: process.argv[4],
   });
 }

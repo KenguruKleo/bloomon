@@ -6,9 +6,9 @@
   "scripts": {
     "start:worker:1": "node ./src/worker localhost 8001",
     "start:worker:2": "node ./src/worker localhost 8002",
-    "start-workers": "run-p --print-label --race start:worker:*",
-    "start-server": "wait-on --window 250 tcp:localhost:8001 tcp:localhost:8002 && node ./src/main",
-    "start": "run-p start-workers start-server",
+    "start:workers": "run-p --print-label --race start:worker:*",
+    "start:server": "wait-on --window 250 tcp:localhost:8001 tcp:localhost:8002 && node ./src/main",
+    "start": "run-p start:workers start:server",
     "eslint": "eslint . --ext .jsx --ext .js"
   },
   "repository": {

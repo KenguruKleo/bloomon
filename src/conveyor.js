@@ -1,3 +1,5 @@
+const constants = require('./constants');
+
 class Conveyor {
   constructor(_cb) {
     this._cb = _cb;
@@ -7,9 +9,26 @@ class Conveyor {
     this._cb = _cb;
   }
 
-  enter(data) {
-    console.log(`received: ${data}`);
-    setTimeout(() => this.exit(`return: ${data}`), 1000);
+  static execute(data) {
+    return new Promise(done => {
+      if (data.length > 2) {
+        done(`Result: ${data}`);
+      } else {
+        done('');
+      }
+    });
+  }
+
+  async enter(data) {
+    process.stdout.write(`received: ${data}`);
+    const result = await Conveyor.execute(data);
+    if (result) {
+      this.exit(result);
+    } else {
+      this.exit(constants.LOOP);
+    }
+    // setTimeout(() => this.exit(data), this._delay);
+    // this.exit(`return: ${data}`);
   }
 
   exit(data) {
