@@ -1,5 +1,5 @@
 const { isWorkersReady } = require('../worker');
-const { waitFn } = require('../utils');
+const { waitFn } = require('../utils/waitings');
 
 const processingStream = (stream, workers, switcher) => {
   stream.resume();
