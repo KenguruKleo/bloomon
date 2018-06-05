@@ -19,17 +19,17 @@ class Conveyor {
     });
   }
 
-  async enter(data) {
+  async input(data) {
     process.stdout.write(`received: (${data})\n`);
     const result = await Conveyor.execute(data);
     if (result) {
-      this.exit(result);
+      this.output(result);
     } else {
-      this.exit(constants.LOOP);
+      this.output(constants.LOOP);
     }
   }
 
-  exit(data) {
+  output(data) {
     if (this._cb) {
       this._cb(data);
     }

@@ -14,7 +14,7 @@ function worker({ host = '0.0.0.0', port = 8000 }, Conveyor) {
     });
 
     socket.on('data', data => {
-      conveyor.enter(data.toString().replace(/\r?\n/, ''));
+      conveyor.input(data.toString().replace(/\r?\n/, ''));
     });
 
     // close connection
