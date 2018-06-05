@@ -20,15 +20,13 @@ class Conveyor {
   }
 
   async enter(data) {
-    process.stdout.write(`received: ${data}`);
+    process.stdout.write(`received: (${data})\n`);
     const result = await Conveyor.execute(data);
     if (result) {
       this.exit(result);
     } else {
       this.exit(constants.LOOP);
     }
-    // setTimeout(() => this.exit(data), this._delay);
-    // this.exit(`return: ${data}`);
   }
 
   exit(data) {

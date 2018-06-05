@@ -1,11 +1,10 @@
 const net = require('net');
-const Conveyor = require('./conveyor');
 
-function worker({ host = '0.0.0.0', port = 8000, delay }) {
+function worker({ host = '0.0.0.0', port = 8000 }, Conveyor) {
   const server = net.createServer(socket => {
     console.log('New connection!');
 
-    const conveyor = new Conveyor(null, delay);
+    const conveyor = new Conveyor();
 
     // const sendDataToSocket = data => socket.write(data);
 
@@ -35,11 +34,3 @@ function worker({ host = '0.0.0.0', port = 8000, delay }) {
 }
 
 module.exports = worker;
-
-if (!module.parent) {
-  worker({
-    host: process.argv[2],
-    port: process.argv[3],
-    delay: process.argv[4],
-  });
-}

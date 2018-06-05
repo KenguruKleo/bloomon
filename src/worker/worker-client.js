@@ -1,13 +1,16 @@
 const net = require('net');
 
 class WorkerClient {
-  constructor({ host, port }) {
+  constructor({ host, port, verbose = false }) {
     this.host = host;
     this.port = port;
+    this.verbose = verbose;
     this.ready = false;
 
     this.client = net.connect({ host: this.host, port: this.port }, () => {
-      console.log('Connected to %s:%d\n', this.host, this.port);
+      if (this.verbose) {
+        console.log('Connected to %s:%d\n', this.host, this.port);
+      }
 
       this.client.setNoDelay(true);
       this.ready = true;
@@ -18,7 +21,7 @@ class WorkerClient {
       });
 
       this.client.on('close', () =>
-        console.log(`\nconnection closed by foreign host: ${this.host}, port: ${this.port}.\n`));
+        this.verbose && console.log(`\nconnection closed by foreign host: ${this.host}, port: ${this.port}.\n`));
     });
   }
 
@@ -28,7 +31,9 @@ class WorkerClient {
 
   close() {
     if (this.client) {
-      console.log(`\nconnection closed by close request: ${this.host}, port: ${this.port}.\n`);
+      if (this.verbose) {
+        console.log(`\nconnection closed by close request: ${this.host}, port: ${this.port}.\n`);
+      }
       this.client.end();
     }
   }
