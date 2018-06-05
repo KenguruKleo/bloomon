@@ -28,6 +28,3 @@ workers.small.on(outputData('W1'));
 workers.large.on(outputData('W2'));
 
 processingStream(process.stdin, workers, switcher);
-
-// process.on('SIGINT', finish);
-// process.on('SIGTERM', finish);
