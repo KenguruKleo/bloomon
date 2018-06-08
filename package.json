@@ -8,8 +8,8 @@
     "start:worker:2": "node ./src/worker localhost 8002",
     "start:workers": "run-p --print-label --race start:worker:*",
     "start:workers:dev": "nodemon --inspect --exec npm run start:workers --watch src",
-    "start:server": "wait-on --window 250 tcp:localhost:8001 tcp:localhost:8002 && node ./src/main",
-    "start": "run-p start:workers start:server",
+    "start:server": "node ./src/main",
+    "start": "node ./src/main-with-workers.js",
     "eslint": "eslint . --ext .jsx --ext .js",
     "test": "jest"
   },

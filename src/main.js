@@ -14,17 +14,26 @@ const getWorkers = () => {
   };
 };
 
-const outputData = workerName => data => {
+const outputData = workerName => data => { // eslint-disable-line
   switch (data.toString()) {
     case constants.LOOP:
       return;
     default:
-      process.stdout.write(`Received from ${workerName}: [${data}]\n`);
+      // process.stdout.write(`Received from ${workerName}: [${data}]\n`);
+      process.stdout.write(`${data}\n`);
   }
 };
 
-const workers = getWorkers();
-workers.small.on(outputData('W1'));
-workers.large.on(outputData('W2'));
+const main = async () => {
+  const workers = getWorkers();
+  workers.small.on(outputData('W1'));
+  workers.large.on(outputData('W2'));
 
-processingStream(process.stdin, workers, switcher);
+  return processingStream(process.stdin, workers, switcher);
+};
+
+module.exports = main;
+
+if (!module.parent) {
+  main();
+}

@@ -5,6 +5,7 @@ const {
   getFlower,
   isSpecification,
   isFlower,
+  getResultBouquet,
 } = require('../utils/specification');
 
 class Conveyor {
@@ -46,10 +47,10 @@ class Conveyor {
       const additionalFlowers = Store.getDistributedItems(matchedSpec.total - subCount, stockFlowersDistribution);
       this.flowersStore.sub(additionalFlowers);
 
-      // return matchedSpec.name;
-      return `${matchedSpec.name}, a: ${JSON.stringify(additionalFlowers)}, st: ${JSON.stringify(this.flowersStore)}`;
+      const bouquet = getResultBouquet(matchedSpec, additionalFlowers);
+      // return `${matchedSpec.name}, bouquet: ${bouquet}`;
+      return bouquet;
     }
-    // return `store: ${JSON.stringify(this.flowersStore)}`;
     return null;
   }
 
@@ -70,7 +71,7 @@ class Conveyor {
 
   async input(data) {
     if (this.verbose) {
-      process.stdout.write(`received: (${data})\n`);
+      // process.stdout.write(`received: (${data})\n`);
     }
     try {
       const result = await this.execute(data);
