@@ -29,7 +29,11 @@ const main = async () => {
   workers.small.on(outputData('W1'));
   workers.large.on(outputData('W2'));
 
-  return processingStream(process.stdin, workers, switcher);
+  try {
+    return processingStream(process.stdin, workers, switcher);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 module.exports = main;

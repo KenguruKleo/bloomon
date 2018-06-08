@@ -28,7 +28,9 @@ const processingStream = (stream, workers, switcher) => (
     });
 
     const finish = async () => {
-      stream.close();
+      if (stream.close) {
+        stream.close();
+      }
 
       await waitFn(() => isWorkersReady(workers));
       await waitFn(() => !busy);
