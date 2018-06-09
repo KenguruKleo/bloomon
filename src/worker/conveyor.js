@@ -38,8 +38,8 @@ class Conveyor {
         while (bouquet) {
           bouquet = this.processCreatingBouquet();
           if (bouquet) result.push(bouquet);
-          console.log(`end: ${bouquet}`);
         }
+        result.push(`Store: ${JSON.stringify(this.flowersStore)}`);
         done(result.join('\n'));
       } else if (this.flowersStore.getItemsCount() >= this.flowersBufferSize) {
         done(this.processCreatingBouquet());
@@ -49,11 +49,15 @@ class Conveyor {
     });
   }
 
+  static findMatchedSpec(specifications, flowersStore) {
+    return specifications
+      .find(specification => flowersStore.checkQuantityBySpec(specification));
+  }
+
   processCreatingBouquet() {
     console.log(this.flowersStore.getItemsCount(), JSON.stringify(this.flowersStore));
 
-    const matchedSpec = this.specifications
-      .find(specification => this.flowersStore.checkQuantityBySpec(specification));
+    const matchedSpec = Conveyor.findMatchedSpec(this.specifications, this.flowersStore);
 
     if (matchedSpec) {
       const subCount = this.flowersStore.sub(matchedSpec.mandatory);
