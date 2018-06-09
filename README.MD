@@ -27,5 +27,5 @@ Workers will be created as child processes
 
 ### TODO
 1. Add buffer to worker to accumulate some extra count of flowers and then
-using "Ordinary Least Squares" method find optimal set of bouquets to maximise their count
+find optimal set of bouquets to maximise their count
 2. Add message for worker - end of stream to start create bouquets from exist buffer (form 1) even if buffer not filled 

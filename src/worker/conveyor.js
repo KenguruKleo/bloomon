@@ -9,8 +9,9 @@ const {
 } = require('../utils/specification');
 
 class Conveyor {
-  constructor(_cb, { verbose = true } = {}) {
+  constructor(_cb, { verbose = true, flowersBufferSize = 256 } = {}) {
     this.verbose = verbose;
+    this.flowersBufferSize = flowersBufferSize;
     this._cb = _cb;
     this.specifications = [];
     this.flowersStore = new Store();
@@ -31,12 +32,26 @@ class Conveyor {
         processor.bind(this)(data);
       }
 
-      const result = this.processCreatingBouquet();
-      done(result);
+      if (data === constants.END_INPUT) {
+        let bouquet = true;
+        const result = [];
+        while (bouquet) {
+          bouquet = this.processCreatingBouquet();
+          if (bouquet) result.push(bouquet);
+          console.log(`end: ${bouquet}`);
+        }
+        done(result.join('\n'));
+      } else if (this.flowersStore.getItemsCount() >= this.flowersBufferSize) {
+        done(this.processCreatingBouquet());
+      } else {
+        done(null);
+      }
     });
   }
 
   processCreatingBouquet() {
+    console.log(this.flowersStore.getItemsCount(), JSON.stringify(this.flowersStore));
+
     const matchedSpec = this.specifications
       .find(specification => this.flowersStore.checkQuantityBySpec(specification));
 

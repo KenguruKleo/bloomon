@@ -33,6 +33,7 @@ const main = async () => {
     return processingStream(process.stdin, workers, switcher);
   } catch (e) {
     console.error(e);
+    return null;
   }
 };
 

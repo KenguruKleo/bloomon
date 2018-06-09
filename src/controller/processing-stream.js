@@ -1,5 +1,6 @@
 const { isWorkersReady } = require('../worker');
 const { waitFn } = require('../utils/waitings');
+const { END_INPUT } = require('../worker/constants');
 
 const processingStream = (stream, workers, switcher) => (
   new Promise(done => {
@@ -28,6 +29,12 @@ const processingStream = (stream, workers, switcher) => (
     });
 
     const finish = async () => {
+      // ask worker process all flowers from buffer
+      await waitFn(() => isWorkersReady(workers));
+      Object
+        .values(workers)
+        .forEach(worker => worker.input(`${END_INPUT}\n`));
+
       if (stream.close) {
         stream.close();
       }

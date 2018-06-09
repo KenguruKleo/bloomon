@@ -26,6 +26,11 @@ class Store {
     return processedCount;
   }
 
+  getItemsCount() {
+    return Object.values(this.items)
+      .reduce((acc, quantity) => (acc + quantity), 0);
+  }
+
   checkQuantityBySpec(specification) {
     if (specification.total > this.total) {
       return false;
