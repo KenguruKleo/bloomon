@@ -26,6 +26,4 @@ Workers will be created as child processes
 2. Run `cat ./data/test-input.txt | docker run --rm -i bloomon`
 
 ### TODO
-1. Add buffer to worker to accumulate some extra count of flowers and then
-find optimal set of bouquets to maximise their count
-2. Add message for worker - end of stream to start create bouquets from exist buffer (form 1) even if buffer not filled 
+1. Add message to overflow buffer and stop container
